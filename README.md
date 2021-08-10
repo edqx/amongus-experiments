@@ -3,7 +3,8 @@
 Several of my among us experiments using [skeldjs](https://github.com/skeldjs/SkeldJS).
 
 In regards to crashers/exploits, I'll only post patched ones. The rest will remain
-"private" until they are patched.
+"private" until they are patched. I report all of my exploits to Innersloth to
+be fixed.
 
 It features the following scripts:
 * `index.js` - host-only crasher
