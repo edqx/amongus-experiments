@@ -12,6 +12,13 @@ No, I will not be sending you non-patched exploits.
 
 It features the following scripts:
 * `index.js` - host-only crasher
+  * Usage: `node index <region>`
+  * Type 'um' into the chat
 * `index2.js` - ruin games exploit
-* `index3.js` - patched tutorial scene method
+  * Usage: `node index2 <region> <game_code>`
+  * Example: `node index3 EU BVACVC`
+* `index3.js` - patched disconnect host & ruin game
+  * Usage: `node index3 <region> <game_code>`
 * `index4.js` - display images using among us characters
+  * Usage: `node index4 <region> <image_path> <resolution_x> <resolution_y>`
+  * Example: `node EU ./flaggb.png 15 15`
