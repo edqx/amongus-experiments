@@ -1,6 +1,8 @@
-# Among us Experiments
+# Among Us Experiments
 
 Several of my among us experiments using [skeldjs](https://github.com/skeldjs/SkeldJS).
+
+Most of these I write at around 3am at night, please excuse the bad code.
 
 In regards to crashers/exploits, I'll only post patched ones. The rest will remain
 "private" until they are patched. I report all of my exploits to Innersloth to
