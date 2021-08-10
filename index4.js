@@ -91,7 +91,7 @@ const [ , , connectRegion, imagePath, resolutionX, resolutionY ] = process.argv;
             const playerId = incrPlayerId++; // get next player id to use, maxes out at 255 which limits resolution
     
             const transform = new skeldjs.CustomNetworkTransform(client, cntNetId, -2, {
-                position: new Vector2(x / playerDensity - (resX * playerDensity / 2), -(y / playerDensity) + (resY * playerDensity / 2)) // set player position to be around the centre of the map
+                position: new Vector2(x / playerDensity - (resX / playerDensity / 2), -(y / playerDensity) + (resY / playerDensity / 2)) // set player position to be around the centre of the map
             });
 
             const transformWriter = HazelWriter.alloc(12); // write the customnetworktransform component
