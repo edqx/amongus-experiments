@@ -13,7 +13,7 @@ const getPixelsAsync = (url) => {
     });
 }
 
-var baseColors = [...Object.entries(skeldjs.ColorCodes)].map(([i, clr]) => clr.highlightRGB);
+const baseColors = [...Object.entries(skeldjs.ColorCodes)].map(([i, clr]) => clr.highlightRGB);
 
 function getNearestColour(rgb) {
     const [ red, green, blue ] = rgb;
