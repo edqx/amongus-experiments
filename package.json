@@ -5,9 +5,14 @@
   "license": "MIT",
   "dependencies": {
     "@skeldjs/client": "^2.11.19",
+    "@skeldjs/lan": "^2.11.19",
     "@skeldjs/protocol": "^2.11.19",
     "@skeldjs/reactor": "^2.11.19",
     "@skeldjs/util": "^2.11.19",
-    "get-pixels": "^3.3.3"
+    "get-pixels": "^3.3.3",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/rimraf": "^3.0.1"
   }
 }

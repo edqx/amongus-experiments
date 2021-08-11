@@ -59,11 +59,13 @@ const [ , , connectRegion, imagePath, resolutionX, resolutionY ] = process.argv;
     const resY = parseInt(resolutionY);
 
     const minAlpha = 127;
-    const playerDensity = 3;
+    const playerDensity = 9;
     const playerName = " ";
 
     console.log("waiting for chat message..");
     await client.wait("player.chat");
+
+    const cacheColors = new Map;
 
     /**
      * @type {{components: [ skeldjs.PlayerControl, unknown, skeldjs.CustomNetworkTransform ]}[]}
@@ -83,12 +85,11 @@ const [ , , connectRegion, imagePath, resolutionX, resolutionY ] = process.argv;
             }
 
             const skeldjsColor = getNearestColour(pixelClr);
+            const cachedColor = cacheColors.get(skeldjsColor);
 
             const pcNetId = client.getNextNetId(); // get player component netids
             const ppNetId = client.getNextNetId();
             const cntNetId = client.getNextNetId();
-    
-            const playerId = incrPlayerId++; // get next player id to use, maxes out at 255 which limits resolution
     
             const transform = new skeldjs.CustomNetworkTransform(client, cntNetId, -2, {
                 position: new Vector2(x / playerDensity - (resX / playerDensity / 2), -(y / playerDensity) + (resY / playerDensity / 2)) // set player position to be around the centre of the map
@@ -96,6 +97,54 @@ const [ , , connectRegion, imagePath, resolutionX, resolutionY ] = process.argv;
 
             const transformWriter = HazelWriter.alloc(12); // write the customnetworktransform component
             transform.Serialize(transformWriter, false);
+
+            if (cachedColor) {
+                await client.send(
+                    new protocol.ReliablePacket(
+                        client.getNextNonce(),
+                        [
+                            new protocol.GameDataMessage(
+                                client.code,
+                                [
+                                    new protocol.SpawnMessage(
+                                        skeldjs.SpawnType.Player,
+                                        client.hostid,
+                                        0,
+                                        [
+                                            new protocol.ComponentSpawnData(
+                                                pcNetId,
+                                                Buffer.from("00" + cachedColor.toString(16).padStart(2, "0"), "hex")
+                                            ),
+                                            new protocol.ComponentSpawnData(
+                                                ppNetId,
+                                                Buffer.alloc(0)
+                                            ),
+                                            new protocol.ComponentSpawnData(
+                                                cntNetId,
+                                                transformWriter.buffer
+                                            )
+                                        ]
+                                    ),
+                                    new protocol.RpcMessage(
+                                        pcNetId,
+                                        new protocol.SetNameMessage(playerName)
+                                    ),
+                                    new protocol.RpcMessage(
+                                        pcNetId,
+                                        new protocol.SetColorMessage(skeldjsColor)
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                );
+                
+                continue;
+            }
+    
+            const playerId = incrPlayerId++; // get next player id to use, maxes out at 255 which limits resolution
+            
+            cacheColors.set(skeldjsColor, playerId);
     
             const gamedataWriter = HazelWriter.alloc(4 + playerName.length + 6); // write the player's info to gamedata
             const mwriter = gamedataWriter.begin(playerId);
@@ -151,14 +200,6 @@ const [ , , connectRegion, imagePath, resolutionX, resolutionY ] = process.argv;
                     ]
                 )
             );
-            
-            players.push({
-                pcNetId,
-                ppNetId,
-                cntNetId,
-                playerId,
-                seqId: 5
-            });
         }
     }
 })();

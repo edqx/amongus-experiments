@@ -21,4 +21,14 @@ It features the following scripts:
   * Usage: `node index3 <region> <game_code>`
 * `index4.js` - display images using among us characters
   * Usage: `node index4 <region> <image_path> <resolution_x> <resolution_y>`
-  * Example: `node EU ./flaggb.png 15 15`
+  * Example: `node index4 EU ./flaggb.png 15 15`
+* `index5.js` - render videos using among us characters
+  * Demo: https://youtu.be/cels2gFiOOQ
+  * Usage:
+    * Step 1: process video into individual frame images
+      * Usage with ffmpeg: `ffmpeg -i "%1" -vf "select=not(mod(n\,<frames_to_skip>))" -vsync vfr <output_dir>/frame_%%05d.png`
+      * Example: `ffmpeg -i "%1" -vf "select=not(mod(n\,4))" -vsync vfr frames/frame_%%05d.png`
+      * `frames_to_skip` is the number of frames to skip inbetween, see `skippedFrames` in `index5.js` to change this if you change that value too.
+    * Step 2: start the program
+      * Usage: `node index5 <region> <images_dir_path> <res_x> <res_y>`
+      * Example: `node index5 EU ./frames 16 16`
